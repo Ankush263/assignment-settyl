@@ -47,7 +47,6 @@ app.use(xss());
 app.use(express.static(path.join(__dirname, 'views')));
 
 io.on('connection', (socket) => {
-	console.log('connect');
 	socket.on('get-document', async (documentId) => {
 		const doc = await Document.findById(documentId);
 		const data = doc.contents || '';
