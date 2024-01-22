@@ -8,6 +8,9 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const path = require('path');
+const UserRouter = require('./routes/userRouter');
+const DocumentRouter = require('./routes/documentRouter');
+const Document = require('./models/documentModel');
 const io = require('socket.io')(5000, {
 	cors: {
 		origin: 'http://127.0.0.1:5173',
@@ -44,15 +47,32 @@ app.use(xss());
 app.use(express.static(path.join(__dirname, 'views')));
 
 io.on('connection', (socket) => {
-	console.log('connected');
+	console.log('connect');
+	socket.on('get-document', async (documentId) => {
+		const doc = await Document.findById(documentId);
+		const data = doc.contents || '';
+		socket.join(documentId);
+		socket.emit('load-document', data);
 
-	socket.on('send-changes', (delta) => {
-		console.log(delta);
-		socket.broadcast.emit('receive-changes', delta);
+		socket.on('send-changes', (delta) => {
+			socket.broadcast.to(documentId).emit('receive-changes', delta);
+		});
+
+		socket.on('save-document', async (data) => {
+			await Document.findByIdAndUpdate(
+				documentId,
+				{ contents: data },
+				{
+					new: true,
+					runValidators: true,
+				}
+			);
+		});
 	});
 });
 
-// app.use('/api/v1/allUser', allUserRouter);
+app.use('/api/v1/user', UserRouter);
+app.use('/api/v1/document', DocumentRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server!!`, 404));

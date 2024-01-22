@@ -3,7 +3,11 @@ import Quill, { Sources } from 'quill';
 import 'quill/dist/quill.snow.css';
 import { Socket, io } from 'socket.io-client';
 import Delta from 'quill-delta';
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
+interface ParamsInterface {
+	id: string;
+}
 
 const option = [
 	[{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -18,7 +22,7 @@ const option = [
 ];
 
 export default function TextEditor() {
-	// const { id: documentId } = useParams();
+	const { id: documentId } = useParams<ParamsInterface>();
 	const [socket, setSocket] = useState<Socket>();
 	const [quill, setQuill] = useState<Quill>();
 
@@ -39,8 +43,8 @@ export default function TextEditor() {
 			quill.enable();
 		});
 
-		// socket.emit('get-document', documentId);
-	}, [socket, quill]);
+		socket.emit('get-document', documentId);
+	}, [socket, quill, documentId]);
 
 	useEffect(() => {
 		if (socket == null || quill == null) return;
@@ -97,8 +101,8 @@ export default function TextEditor() {
 				theme: 'snow',
 				modules: { toolbar: option },
 			});
-			// q.disable();
-			// q.setText('Loading...');
+			q.disable();
+			q.setText('Loading...');
 			setQuill(q);
 		},
 		[]
