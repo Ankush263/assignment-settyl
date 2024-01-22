@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import Quill, { Sources } from 'quill';
 import 'quill/dist/quill.snow.css';
 import { Socket, io } from 'socket.io-client';
-import Delta from 'quill-delta';
 import { useParams } from 'react-router-dom';
 
 interface ParamsInterface {
@@ -61,7 +60,7 @@ export default function TextEditor() {
 	useEffect(() => {
 		if (socket == null || quill == null) return;
 
-		const handler = (delta: Delta) => {
+		const handler = (delta: unknown) => {
 			quill.updateContents(delta);
 		};
 		socket.on('receive-changes', handler);
@@ -74,7 +73,7 @@ export default function TextEditor() {
 	useEffect(() => {
 		if (socket == null || quill == null) return;
 
-		const handler = (delta: Delta, _oldDelta: Delta, source: Sources) => {
+		const handler = (delta: unknown, _oldDelta: unknown, source: Sources) => {
 			if (source !== 'user') return;
 			socket.emit('send-changes', delta);
 		};
