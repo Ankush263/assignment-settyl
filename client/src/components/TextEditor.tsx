@@ -26,7 +26,9 @@ export default function TextEditor() {
 	const [quill, setQuill] = useState<Quill>();
 
 	useEffect(() => {
-		const s = io('http://localhost:5000');
+		const s = io(
+			import.meta.env.VITE_SOCKET_SERVER_URL || 'http://localhost:5000'
+		);
 		setSocket(s);
 
 		return () => {

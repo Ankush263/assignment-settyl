@@ -11,7 +11,10 @@ const path = require('path');
 const UserRouter = require('./routes/userRouter');
 const DocumentRouter = require('./routes/documentRouter');
 const Document = require('./models/documentModel');
-const io = require('socket.io')(5000, {
+const dotenv = require('dotenv');
+dotenv.config({});
+
+const io = require('socket.io')(process.env.PORT || 5000, {
 	cors: {
 		origin: 'https://assignment-settyl.vercel.app/',
 		methods: ['GET', 'POST'],
