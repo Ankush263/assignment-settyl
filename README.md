@@ -6,7 +6,7 @@
 git clone https://github.com/Ankush263/assignment-settyl.git
 cd client
 npm i
-cp .env.txt /* Fill all the key-values */
+cp .env.txt .env /* Fill all the key-values */
 npm run dev
 cd ..
 ```
@@ -16,6 +16,6 @@ cd ..
 ```sh
 cd server
 npm i
-cp .env.txt /* Fill all the key-values */
+cp .env.txt .env /* Fill all the key-values */
 npm start
 ```
