@@ -13,7 +13,7 @@ const DocumentRouter = require('./routes/documentRouter');
 const Document = require('./models/documentModel');
 const io = require('socket.io')(5000, {
 	cors: {
-		origin: 'http://127.0.0.1:5173',
+		origin: 'https://assignment-settyl.vercel.app/',
 		methods: ['GET', 'POST'],
 	},
 });
