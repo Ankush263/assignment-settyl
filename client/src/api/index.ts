@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const URL = 'http://localhost:3000';
-const URL = 'https://assignment-settl.onrender.com';
+const URL = 'http://localhost:3000';
 
 const USER_URL = `${URL}/api/v1/user`;
 const DOCS_URL = `${URL}/api/v1/document`;

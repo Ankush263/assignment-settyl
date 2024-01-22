@@ -14,9 +14,9 @@ const Document = require('./models/documentModel');
 const dotenv = require('dotenv');
 dotenv.config({});
 
-const io = require('socket.io')(process.env.PORT || 500, {
+const io = require('socket.io')(5000, {
 	cors: {
-		origin: 'https://assignment-settyl.vercel.app/',
+		origin: 'http://127.0.0.1:5173',
 		methods: ['GET', 'POST'],
 	},
 });
